@@ -369,9 +369,11 @@ function M.pushCellToChute(cellName)
         return false
     end
 
-    dlog("pushCellToChute: pushing " .. tostring(cellName) .. " from slot " .. tostring(cell.slot) .. " to chute")
+    dlog("pushCellToChute: pushing " .. tostring(cellName) .. " from slot " .. tostring(cell.slot) .. " to chute direction " .. tostring(CELL_CHUTE_DIR))
+    -- NOTICE: barrel:pushItems uses a SIDE direction (e.g. "bottom"), not a peripheral name.
+    -- Vanilla barrels cannot pushItems by peripheral name — only by side relative to the computer.
     local ok, moved = pcall(function()
-        return src.pushItems(CHUTE, cell.slot, 1)
+        return src.pushItems(CELL_CHUTE_DIR, cell.slot, 1)
     end)
 
     if ok and moved and moved > 0 then

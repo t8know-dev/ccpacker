@@ -16,10 +16,11 @@ local ui       -- ui module
 local pay      -- payment module
 
 -- Local flags for state machine
-local paymentSetupDone = false
-local idleBlinkTimer   = 0     -- os.clock() tracker for blink toggle
-local idleCheckTimer   = 0     -- os.clock() tracker for barrel check
-local blinkState       = true  -- current blink state
+local paymentSetupDone    = false
+local idleBlinkTimer      = 0     -- os.clock() tracker for blink toggle
+local idleCheckTimer      = 0     -- os.clock() tracker for barrel check
+local promptCheckTimer    = 0     -- os.clock() tracker for prompt barrel check
+local blinkState          = true  -- current blink state
 
 function M.init(stateModule, peripheralsModule, uiModule, paymentModule)
     st = stateModule
@@ -140,16 +141,23 @@ end
 function M._handlePromptState()
     local state = st.getState()
     local entryTime = state.screenEntryTime or 0
+    local now = os.clock()
 
     -- Timeout check
-    if os.clock() >= entryTime + SCREEN_TIMEOUT then
+    if now >= entryTime + SCREEN_TIMEOUT then
         dlog("_handlePromptState: timeout, returning to idle")
-        st.updateState({ screen = "idle", screenEntryTime = os.clock() })
+        st.updateState({ screen = "idle", screenEntryTime = now })
         return
     end
 
-    -- Barrel is checked. If items are removed while on this screen and the
-    -- barrel becomes empty, transition to error.
+    -- Throttle barrel check to BARREL_CHECK_INTERVAL — list() is expensive
+    if now - promptCheckTimer < BARREL_CHECK_INTERVAL then
+        return
+    end
+    promptCheckTimer = now
+
+    -- If items are removed while on this screen and the barrel becomes empty,
+    -- transition to error.
     local items = periphs.getBarrelItems()
     if items.totalItems <= 0 then
         dlog("_handlePromptState: barrel became empty")

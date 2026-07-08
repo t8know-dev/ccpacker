@@ -19,6 +19,10 @@ CHUTE          = "create:chute_0"
 IO_PORT        = "ae2:io_port_1"
 CELL_BARREL    = "top"   -- Computer top face — barrel with empty AE2 cells
 
+-- Direction from the cell barrel to the chute (side, not peripheral name).
+-- If the chute is below the barrel, use "bottom". Adjust for your layout.
+CELL_CHUTE_DIR = "bottom"
+
 -- Redstone relay configuration
 RELAY_LOCK_SIDE         = "top"   -- Relay output → depositor lock (HIGH = locked)
 PAYMENT_DETECTION_SIDE  = "top"   -- Relay input ← depositor payment signal
@@ -54,7 +58,7 @@ SPLASH_DELAY            = 3     -- Seconds to show splash screen
 TRANSFER_TICK_INTERVAL  = 0.1   -- Vendor loop poll interval
 
 -- Version
-APP_VERSION = "v0.1"
+APP_VERSION = "v0.2"
 
 -- UI Messages — monitor scale 0.5, 1×1 monitor ≈ 26×8 chars. Keep text SHORT.
 MSG = {
