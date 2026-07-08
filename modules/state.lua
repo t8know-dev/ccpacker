@@ -36,6 +36,7 @@ local state = {
 
     -- Error
     errorMsg        = "",
+    errorMsgLine2   = "",   -- second line for multi-line error messages
 }
 
 local subscribers = {}
@@ -79,6 +80,7 @@ function M.resetTransaction()
     state.paymentBaseline = nil
     state.paymentPaid = false
     state.errorMsg = ""
+    state.errorMsgLine2 = ""
 end
 
 return M

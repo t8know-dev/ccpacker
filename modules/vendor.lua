@@ -121,8 +121,8 @@ function M._handleIdleState()
     if now - idleCheckTimer >= BARREL_CHECK_INTERVAL then
         idleCheckTimer = now
         local items = periphs.getBarrelItems()
-        if items.totalItems > 0 then
-            dlog("_handleIdleState: " .. tostring(items.totalItems) .. " items found, transitioning to prompt")
+        if items.totalItems > 0 and (items.nonCellItems or 0) > 0 then
+            dlog("_handleIdleState: " .. tostring(items.nonCellItems) .. " non-cell items found, transitioning to prompt")
             st.updateState({
                 screen = "prompt",
                 screenEntryTime = os.clock(),
@@ -130,6 +130,8 @@ function M._handleIdleState()
                 totalBarrelItems = items.totalItems,
                 uniqueItemTypes = items.uniqueTypes,
             })
+        elseif items.totalItems > 0 and (items.nonCellItems or 0) == 0 then
+            dlog("_handleIdleState: only AE2 cells in barrel (" .. tostring(items.totalItems) .. " items), skipping prompt")
         end
     end
 end
@@ -156,11 +158,11 @@ function M._handlePromptState()
     end
     promptCheckTimer = now
 
-    -- If items are removed while on this screen and the barrel becomes empty,
-    -- transition to error.
+    -- If items are removed while on this screen and the barrel becomes empty
+    -- or only contains cells, transition to error.
     local items = periphs.getBarrelItems()
-    if items.totalItems <= 0 then
-        dlog("_handlePromptState: barrel became empty")
+    if items.totalItems <= 0 or (items.nonCellItems or 0) <= 0 then
+        dlog("_handlePromptState: barrel empty or only cells remain")
         st.updateState({
             screen = "error",
             errorMsg = MSG.error_stock or "No items to pack!",
@@ -236,7 +238,8 @@ function M.selectCellType(cellType)
         dlog("selectCellType: " .. tostring(cell.id) .. " not in cell barrel")
         st.updateState({
             screen = "error",
-            errorMsg = MSG.error_cell or "Cell not available!",
+            errorMsg = MSG.error_cell or "Cell not",
+            errorMsgLine2 = MSG.error_cell_line2 or "available!",
         })
         return
     end

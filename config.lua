@@ -62,8 +62,8 @@ APP_VERSION = "v0.3"
 
 -- UI Messages — monitor scale 0.5, 1×1 monitor ≈ 26×8 chars. Keep text SHORT.
 MSG = {
-    header            = "CCPACKER",
-    splash_line1      = "CCPACKER",
+    header            = "CC PACKER",
+    splash_line1      = "CC PACKER",
     splash_line2      = "Item Packer",
     splash_line3      = APP_VERSION,
 
@@ -93,7 +93,8 @@ MSG = {
 
     error_timeout     = "Timeout!",
     error_stock       = "No items to pack!",
-    error_cell        = "Cell not available!",
+    error_cell        = "Cell not",
+    error_cell_line2  = "available!",
     error_capacity    = "Items exceed!",
     error_depositor   = "Depositor error!",
     error_transaction = "Transaction failed!",

@@ -133,11 +133,10 @@ function M.createUI(monitor, callbacks)
         root:addChild(splashLabel3)
     end
 
-    -- Idle screen: blink arrow hint (row h-3, col 2)
-    if h >= 3 then
-        local hintY = h - 3
+    -- Idle screen: blink arrow hint (row 4, col 2)
+    if h >= 4 then
         elHintArrow = app:createLabel({
-            x = 2, y = hintY,
+            x = 2, y = 4,
             width = 1, height = 1,
             text = "\17",  -- left arrow
             align = "left",
@@ -147,13 +146,13 @@ function M.createUI(monitor, callbacks)
         root:addChild(elHintArrow)
     end
 
-    -- Idle screen: text label "order pickup" (row 4)
+    -- Idle screen: text label "order pickup" (row 4, col 4)
     if h >= 4 then
         idleLabel = app:createLabel({
-            x = 1, y = 4,
-            width = w, height = 1,
-            text = centerText(MSG.idle_line1 or "order pickup", w),
-            align = "center",
+            x = 4, y = 4,
+            width = w - 3, height = 1,
+            text = MSG.idle_line1 or "order pickup",
+            align = "left",
             bg = colors.black,
             fg = colors.white,
             visible = false,
@@ -398,7 +397,7 @@ function M.updateScreen(st)
     elseif st.screen == "idle" then
         if headerLabel then headerLabel.visible = true end
         if idleLabel then
-            idleLabel:setText(centerText(MSG.idle_line1 or "order pickup", w))
+            idleLabel:setText(MSG.idle_line1 or "order pickup")
             idleLabel.fg = colors.white
             idleLabel.visible = true
         end
@@ -505,9 +504,14 @@ function M.updateScreen(st)
             msgLine1.visible = true
         end
         if msgLine2 then
-            msgLine2:setText(MSG.error_line1 or "Error!")
+            msgLine2:setText(st.errorMsgLine2 or "")
             msgLine2.fg = colors.red
-            msgLine2.visible = true
+            msgLine2.visible = st.errorMsgLine2 and #st.errorMsgLine2 > 0
+        end
+        if msgLine3 then
+            msgLine3:setText(MSG.error_line1 or "Error!")
+            msgLine3.fg = colors.red
+            msgLine3.visible = true
         end
     end
 

@@ -303,18 +303,23 @@ function M.getBarrelItems()
 
     local total = 0
     local seen = {}
+    local nonCellCount = 0
     for _, item in pairs(items) do
         total = total + (item.count or 0)
         if item and item.name then
             seen[item.name] = true
+            -- Check if this item is NOT an AE2 cell (items starting with "ae2:")
+            if item.name:sub(1, 4) ~= "ae2:" then
+                nonCellCount = nonCellCount + (item.count or 0)
+            end
         end
     end
 
     local types = 0
     for _ in pairs(seen) do types = types + 1 end
 
-    dlog("getBarrelItems: " .. tostring(total) .. " items, " .. tostring(types) .. " types")
-    return { totalItems = total, uniqueTypes = types }
+    dlog("getBarrelItems: " .. tostring(total) .. " items, " .. tostring(types) .. " types, " .. tostring(nonCellCount) .. " non-cell")
+    return { totalItems = total, uniqueTypes = types, nonCellItems = nonCellCount }
 end
 
 -- Check if input barrel has any items at all.
