@@ -11,17 +11,17 @@
 --   CELL_BARREL  "top" (computer top)    (contains empty AE2 cells)
 
 -- Peripherals
-MONITOR        = "monitor_18"
-DEPOSITOR      = "Numismatics_Depositor_14"
-RELAY          = "redstone_relay_17"
-INPUT_BARREL   = "minecraft:barrel_10"
-CHUTE          = "create:chute_0"
-IO_PORT        = "ae2:io_port_1"
-CELL_BARREL    = "minecraft:barrel_12"   -- Computer top face — barrel with empty AE2 cells
+MONITOR        = "monitor_19"
+DEPOSITOR      = "Numismatics_Depositor_16"
+RELAY          = "redstone_relay_18"
+INPUT_BARREL   = "minecraft:barrel_13"
+CHUTE          = "create:chute_1"
+IO_PORT        = "ae2:io_port_2"
+CELL_BARREL    = "minecraft:barrel_14"   -- Computer top face — barrel with empty AE2 cells
 
 -- Direction from the cell barrel to the chute (side, not peripheral name).
 -- If the chute is below the barrel, use "bottom". Adjust for your layout.
-CELL_CHUTE_DIR = "bottom"
+CELL_CHUTE_DIR = "top"
 
 -- Redstone relay configuration
 RELAY_LOCK_SIDE         = "top"   -- Relay output → depositor lock (HIGH = locked)
@@ -58,7 +58,7 @@ SPLASH_DELAY            = 3     -- Seconds to show splash screen
 TRANSFER_TICK_INTERVAL  = 0.1   -- Vendor loop poll interval
 
 -- Version
-APP_VERSION = "v0.3"
+APP_VERSION = "v0.4"
 
 -- UI Messages — monitor scale 0.5, 1×1 monitor ≈ 26×8 chars. Keep text SHORT.
 MSG = {
