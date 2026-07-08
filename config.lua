@@ -58,7 +58,7 @@ SPLASH_DELAY            = 3     -- Seconds to show splash screen
 TRANSFER_TICK_INTERVAL  = 0.1   -- Vendor loop poll interval
 
 -- Version
-APP_VERSION = "v0.4"
+APP_VERSION = "v0.5"
 
 -- UI Messages — monitor scale 0.5, 1×1 monitor ≈ 26×8 chars. Keep text SHORT.
 MSG = {
@@ -67,13 +67,14 @@ MSG = {
     splash_line2      = "Item Packer",
     splash_line3      = APP_VERSION,
 
-    idle_line1        = "order pickup",
+    idle_line1        = "Order pickup",
 
     prompt_line1      = "Pack items to",
     prompt_line2      = "an AE2 cell?",
     pack_btn          = "PACK",
 
-    cell_choice_title = "Choose cell type",
+    cell_choice_title = "Choose",
+    cell_choice_line2 = "cell type",
     portable_btn      = "PORTABLE",
     normal_btn        = "NORMAL",
 
@@ -87,14 +88,15 @@ MSG = {
     progress_text     = "%d/%d (%d%%)",
 
     thanks_line1      = "Thank you!",
-    thanks_line2      = "Packing complete.",
-    thanks_line3      = "Collect your cell",
-    thanks_line4      = "from the barrel.",
+    thanks_line2      = "Packing",
+    thanks_line3      = "complete.",
+    thanks_line4      = "Collect your",
+    thanks_line5      = "cell",
 
     error_timeout     = "Timeout!",
     error_stock       = "No items to pack!",
     error_cell        = "Cell not",
-    error_cell_line2  = "available!",
+    error_cell_line2  = "available",
     error_capacity    = "Items exceed!",
     error_depositor   = "Depositor error!",
     error_transaction = "Transaction failed!",

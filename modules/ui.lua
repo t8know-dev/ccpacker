@@ -16,7 +16,7 @@ local splashLabel1, splashLabel2, splashLabel3
 local idleLabel, elHintArrow
 local msgLine1, msgLine2, msgLine3, msgLine4
 local packButton
-local cellChoiceTitle
+local cellChoiceTitle, cellChoiceLine2
 local portableBtn, normalBtn
 local cancelButton
 local progressBar, progressTextLabel
@@ -46,6 +46,7 @@ local function hideAllDynamic()
     if msgLine4 then msgLine4.visible = false end
     if packButton then packButton.visible = false end
     if cellChoiceTitle then cellChoiceTitle.visible = false end
+    if cellChoiceLine2 then cellChoiceLine2.visible = false end
     if portableBtn then portableBtn.visible = false end
     if normalBtn then normalBtn.visible = false end
     if cancelButton then cancelButton.visible = false end
@@ -265,26 +266,37 @@ function M.createUI(monitor, callbacks)
         root:addChild(thanksLine5)
     end
 
-    -- Cell choice title (row 3)
+    -- Cell choice title (rows 3-4)
     if h >= 3 then
         cellChoiceTitle = app:createLabel({
             x = 1, y = 3,
             width = w, height = 1,
-            text = centerText(MSG.cell_choice_title or "Choose cell type", w),
+            text = centerText(MSG.cell_choice_title or "Choose", w),
             align = "center",
             bg = colors.black,
             fg = colors.white,
             visible = false,
         })
         root:addChild(cellChoiceTitle)
+
+        cellChoiceLine2 = app:createLabel({
+            x = 1, y = 4,
+            width = w, height = 1,
+            text = centerText(MSG.cell_choice_line2 or "cell type", w),
+            align = "center",
+            bg = colors.black,
+            fg = colors.white,
+            visible = false,
+        })
+        root:addChild(cellChoiceLine2)
     end
 
-    -- PORTABLE button (row 5)
-    if h >= 5 then
-        local btnWidth = 14
+    -- PORTABLE button (row 6)
+    if h >= 6 then
+        local btnWidth = 15
         local btnX = math.floor((w - btnWidth) / 2)
         portableBtn = app:createButton({
-            x = btnX + 1, y = 5,
+            x = btnX + 1, y = 6,
             width = btnWidth, height = 1,
             label = " [ " .. (MSG.portable_btn or "PORTABLE") .. " ]",
             bg = colors.gray,
@@ -295,12 +307,12 @@ function M.createUI(monitor, callbacks)
         root:addChild(portableBtn)
     end
 
-    -- NORMAL button (row 7)
-    if h >= 7 then
-        local btnWidth = 14
+    -- NORMAL button (row 8)
+    if h >= 8 then
+        local btnWidth = 15
         local btnX = math.floor((w - btnWidth) / 2)
         normalBtn = app:createButton({
-            x = btnX + 1, y = 7,
+            x = btnX + 1, y = 8,
             width = btnWidth, height = 1,
             label = " [ " .. (MSG.normal_btn or "NORMAL") .. " ]",
             bg = colors.gray,
@@ -347,7 +359,7 @@ function M.createUI(monitor, callbacks)
 
     -- PACK button (3 lines high, green, rows 6-8)
     if h >= 8 then
-        local btnWidth = 14
+        local btnWidth = 15
         local btnX = math.floor((w - btnWidth) / 2)
         packButton = app:createButton({
             x = btnX + 1, y = 6,
@@ -422,6 +434,7 @@ function M.updateScreen(st)
     elseif st.screen == "cell_choice" then
         if headerLabel then headerLabel.visible = true end
         if cellChoiceTitle then cellChoiceTitle.visible = true end
+        if cellChoiceLine2 then cellChoiceLine2.visible = true end
         if portableBtn then portableBtn.visible = true end
         if normalBtn then normalBtn.visible = true end
 
@@ -494,6 +507,10 @@ function M.updateScreen(st)
         if thanksLine4 then
             thanksLine4:setText(MSG.thanks_line4 or "from the barrel.")
             thanksLine4.visible = true
+        end
+        if thanksLine5 then
+            thanksLine5:setText(MSG.thanks_line5 or "cell")
+            thanksLine5.visible = true
         end
 
     elseif st.screen == "error" then
