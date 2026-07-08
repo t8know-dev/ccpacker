@@ -13,7 +13,7 @@ local root
 -- Widget references
 local headerLabel
 local splashLabel1, splashLabel2, splashLabel3
-local idleLabel
+local idleLabel, elHintArrow
 local msgLine1, msgLine2, msgLine3, msgLine4
 local packButton
 local cellChoiceTitle
@@ -39,6 +39,7 @@ local function hideAllDynamic()
     if splashLabel2 then splashLabel2.visible = false end
     if splashLabel3 then splashLabel3.visible = false end
     if idleLabel then idleLabel.visible = false end
+    if elHintArrow then elHintArrow.visible = false end
     if msgLine1 then msgLine1.visible = false end
     if msgLine2 then msgLine2.visible = false end
     if msgLine3 then msgLine3.visible = false end
@@ -90,7 +91,7 @@ function M.createUI(monitor, callbacks)
         width = w, height = 2,
         text = centerText(MSG.header or "CCPACKER", w),
         align = "center",
-        bg = colors.red,
+        bg = colors.green,
         fg = colors.white,
         visible = false,
     })
@@ -132,12 +133,26 @@ function M.createUI(monitor, callbacks)
         root:addChild(splashLabel3)
     end
 
-    -- Idle screen: blink label "< order pickup" (row 4)
+    -- Idle screen: blink arrow hint (row h-3, col 2)
+    if h >= 3 then
+        local hintY = h - 3
+        elHintArrow = app:createLabel({
+            x = 2, y = hintY,
+            width = 1, height = 1,
+            text = "\17",  -- left arrow
+            align = "left",
+            bg = colors.black, fg = colors.white,
+            visible = false,
+        })
+        root:addChild(elHintArrow)
+    end
+
+    -- Idle screen: text label "order pickup" (row 4)
     if h >= 4 then
         idleLabel = app:createLabel({
             x = 1, y = 4,
             width = w, height = 1,
-            text = centerText(MSG.idle_line1 or "< order pickup", w),
+            text = centerText(MSG.idle_line1 or "order pickup", w),
             align = "center",
             bg = colors.black,
             fg = colors.white,
@@ -383,14 +398,12 @@ function M.updateScreen(st)
     elseif st.screen == "idle" then
         if headerLabel then headerLabel.visible = true end
         if idleLabel then
-            if st.blinkVisible then
-                idleLabel:setText(centerText(MSG.idle_line1 or "< order pickup", w))
-                idleLabel.fg = colors.white
-            else
-                idleLabel:setText(centerText("  order pickup", w))
-                idleLabel.fg = colors.gray
-            end
+            idleLabel:setText(centerText(MSG.idle_line1 or "order pickup", w))
+            idleLabel.fg = colors.white
             idleLabel.visible = true
+        end
+        if elHintArrow then
+            elHintArrow.visible = st.blinkVisible
         end
 
     elseif st.screen == "prompt" then

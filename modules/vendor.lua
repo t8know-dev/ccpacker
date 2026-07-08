@@ -340,21 +340,18 @@ function M._handlePaymentState()
             periphs.lockDepositor()
             paymentSetupDone = false
 
-            -- Record initial item count for progress tracking
+            -- Snapshot the current barrel contents as the progress baseline.
+            -- This is the moment the IO port will start pulling from, so
+            -- measure fresh rather than using the potentially-stale
+            -- totalBarrelItems from the first-enter setup.
             local items = periphs.getBarrelItems()
-
-            -- Also check if barrel is already empty (IO port might have been fast)
-            -- In that case, initialItemCount stays as what was measured earlier
-            local initialCount = state.totalBarrelItems
-            if initialCount <= 0 then
-                initialCount = items.totalItems
-            end
+            local currentItems = items.totalItems
 
             st.updateState({
                 screen = "packing",
                 screenEntryTime = os.clock(),
-                initialItemCount = initialCount,
-                transferred = (initialCount - items.totalItems),
+                initialItemCount = currentItems,
+                transferred = 0,
             })
 
         elseif deadline and os.clock() >= deadline then
@@ -402,15 +399,44 @@ function M._handlePackingState()
         end
         dlog("_handlePackingState: cell pushed successfully")
         st.updateState({ cellPushed = true })
+
+        -- Take an initial progress reading so the bar can start filling
+        -- even before the next vendor loop tick.
+        local items = periphs.getBarrelItems()
+        local initial = state.initialItemCount or items.totalItems
+        if initial > 0 then
+            local removed = initial - items.totalItems
+            if removed < 0 then removed = 0 end
+            st.updateState({ transferred = removed })
+            ui.updateProgress(st.getState())
+        end
         return -- next vendor loop tick will re-enter at PHASE 2
     end
 
-    -- PHASE 2: Poll IO port for packing completion
+    -- PHASE 2: Update progress from barrel emptying, then check IO port
+    local items = periphs.getBarrelItems()
+    local initial = state.initialItemCount
+    if initial and initial > 0 then
+        local removed = initial - items.totalItems
+        if removed < 0 then removed = 0 end
+        st.updateState({ transferred = removed })
+
+        -- Live UI update before checking IO port
+        local s = st.getState()
+        ui.updateProgress(s)
+    end
+
+    -- Now check IO port for completion
     local ioItems = periphs.getIoPortItems()
 
     if #ioItems > 0 then
         -- IO port has items! Packing is complete.
         dlog("_handlePackingState: IO port has finished packing")
+
+        -- Set progress to 100% and render so player sees it
+        st.updateState({ transferred = state.initialItemCount or 1 })
+        ui.updateProgress(st.getState())
+        os.sleep(0.5) -- brief moment to show 100% green bar
 
         -- Extract cell name from the items table
         local cellName = nil
@@ -444,29 +470,13 @@ function M._handlePackingState()
             dlog("_handlePackingState: cell retrieved successfully")
         end
 
-        -- Force progress to 100%
-        st.updateState({ transferred = state.initialItemCount or 0 })
         -- Show thankyou screen
         st.updateState({ screen = "thankyou" })
         return
     end
 
-    -- IO port is still empty — packing is in progress.
-    -- Update progress bar based on barrel emptying.
-    local items = periphs.getBarrelItems()
-    local initial = state.initialItemCount
-    if initial and initial > 0 then
-        local removed = initial - items.totalItems
-        if removed < 0 then removed = 0 end -- cap if items were added
-        st.updateState({ transferred = removed })
-
-        -- Live UI update
-        local s = st.getState()
-        ui.updateProgress(s)
-    end
-
-    -- Sleep before polling again
-    os.sleep(PACKING_POLL_INTERVAL)
+    -- IO port is still empty — packing is in progress, wait for next tick.
+    -- No sleep needed here; vendorLoop's own TRANSFER_TICK_INTERVAL handles pacing.
 end
 
 -- ============================================================================

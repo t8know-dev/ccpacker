@@ -17,7 +17,7 @@ RELAY          = "redstone_relay_17"
 INPUT_BARREL   = "minecraft:barrel_10"
 CHUTE          = "create:chute_0"
 IO_PORT        = "ae2:io_port_1"
-CELL_BARREL    = "top"   -- Computer top face — barrel with empty AE2 cells
+CELL_BARREL    = "minecraft:barrel_12"   -- Computer top face — barrel with empty AE2 cells
 
 -- Direction from the cell barrel to the chute (side, not peripheral name).
 -- If the chute is below the barrel, use "bottom". Adjust for your layout.
@@ -58,7 +58,7 @@ SPLASH_DELAY            = 3     -- Seconds to show splash screen
 TRANSFER_TICK_INTERVAL  = 0.1   -- Vendor loop poll interval
 
 -- Version
-APP_VERSION = "v0.2"
+APP_VERSION = "v0.3"
 
 -- UI Messages — monitor scale 0.5, 1×1 monitor ≈ 26×8 chars. Keep text SHORT.
 MSG = {
@@ -67,7 +67,7 @@ MSG = {
     splash_line2      = "Item Packer",
     splash_line3      = APP_VERSION,
 
-    idle_line1        = "< order pickup",
+    idle_line1        = "order pickup",
 
     prompt_line1      = "Pack items to",
     prompt_line2      = "an AE2 cell?",
