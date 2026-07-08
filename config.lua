@@ -58,7 +58,7 @@ SPLASH_DELAY            = 3     -- Seconds to show splash screen
 TRANSFER_TICK_INTERVAL  = 0.1   -- Vendor loop poll interval
 
 -- Version
-APP_VERSION = "v0.5"
+APP_VERSION = "v0.6"
 
 -- UI Messages — monitor scale 0.5, 1×1 monitor ≈ 26×8 chars. Keep text SHORT.
 MSG = {
@@ -88,10 +88,9 @@ MSG = {
     progress_text     = "%d/%d (%d%%)",
 
     thanks_line1      = "Thank you!",
-    thanks_line2      = "Packing",
-    thanks_line3      = "complete.",
-    thanks_line4      = "Collect your",
-    thanks_line5      = "cell",
+    thanks_line2      = "Packing done",
+    thanks_line4      = "Collect",
+    thanks_line5      = "your cell",
 
     error_timeout     = "Timeout!",
     error_stock       = "No items to pack!",

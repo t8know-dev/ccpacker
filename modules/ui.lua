@@ -244,7 +244,7 @@ function M.createUI(monitor, callbacks)
         root:addChild(thanksLine3)
 
         thanksLine4 = app:createLabel({
-            x = 1, y = 6,
+            x = 1, y = 5,
             width = w, height = 1,
             text = "",
             align = "center",
@@ -255,7 +255,7 @@ function M.createUI(monitor, callbacks)
         root:addChild(thanksLine4)
 
         thanksLine5 = app:createLabel({
-            x = 1, y = 7,
+            x = 1, y = 6,
             width = w, height = 1,
             text = "",
             align = "center",
@@ -497,19 +497,15 @@ function M.updateScreen(st)
             thanksLine1.visible = true
         end
         if thanksLine2 then
-            thanksLine2:setText(MSG.thanks_line2 or "Packing complete.")
+            thanksLine2:setText(MSG.thanks_line2 or "Packing done")
             thanksLine2.visible = true
         end
-        if thanksLine3 then
-            thanksLine3:setText(MSG.thanks_line3 or "Collect your cell")
-            thanksLine3.visible = true
-        end
         if thanksLine4 then
-            thanksLine4:setText(MSG.thanks_line4 or "from the barrel.")
+            thanksLine4:setText(MSG.thanks_line4 or "Collect")
             thanksLine4.visible = true
         end
         if thanksLine5 then
-            thanksLine5:setText(MSG.thanks_line5 or "cell")
+            thanksLine5:setText(MSG.thanks_line5 or "your cell")
             thanksLine5.visible = true
         end
 
