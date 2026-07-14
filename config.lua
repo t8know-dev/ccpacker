@@ -11,13 +11,13 @@
 --   CELL_BARREL  "top" (computer top)    (contains empty AE2 cells)
 
 -- Peripherals
-MONITOR        = "monitor_20"
-DEPOSITOR      = "Numismatics_Depositor_16"
-RELAY          = "redstone_relay_17"
-INPUT_BARREL   = "expandedstorage:netherite_barrel_3"
-CHUTE          = "create:chute_2"
-IO_PORT        = "ae2:io_port_3"
-CELL_BARREL    = "expandedstorage:netherite_barrel_4"   -- Computer top face — barrel with empty AE2 cells
+MONITOR        = "monitor_1170"
+DEPOSITOR      = "Numismatics_Depositor_33"
+RELAY          = "redstone_relay_73"
+INPUT_BARREL   = "expandedstorage:netherite_chest_0"
+CHUTE          = "create:chute_6"
+IO_PORT        = "ae2:io_port_2"
+CELL_BARREL    = "expandedstorage:netherite_barrel_10"   -- Computer top face — barrel with empty AE2 cells
 
 -- Direction from the cell barrel to the chute (side, not peripheral name).
 -- If the chute is below the barrel, use "bottom". Adjust for your layout.
